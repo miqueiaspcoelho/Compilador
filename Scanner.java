@@ -13,6 +13,7 @@ class Scanner {
   private char[] content;
   private int state;
   private int index;
+  private int indexNext=1;
   
   public Scanner(String input){
     try{
@@ -108,7 +109,6 @@ class Scanner {
   private boolean isEndOfFile(){//checa fim de arquivo
     return index >= content.length;
   }
-
   
 
   private char nextChar(){//proximo caractere
@@ -118,14 +118,28 @@ class Scanner {
     return content[index++];
   }
 
+  private char futureChar(){
+    if(isEndOfFile()){
+      return '\0';
+    }
+    else if(!(index== content.length)){
+      return content[indexNext++];
+    }
+    return content[indexNext];
+  }
+
+
   
   
   private void back(){//volta estad0
     index--;
   }
 
+  private boolean isComent(char c, char d){
+    return (c=='\'' && d=='\'');
+  }
   public Token nextToken(){//esse aqui é o brabo, faz a mágica
-    char currentChar;
+    char currentChar,futureChar;
     Token token;
     String term="";
     state = 0;
@@ -136,6 +150,9 @@ class Scanner {
      
     while(true){
       currentChar = nextChar();
+      //futureChar = futureChar();
+      //System.out.println("char atual "+currentChar);
+     // System.out.println("char futuro "+futureChar);
       switch(state){
         case 0:
           if(isStringConst(currentChar)){
@@ -145,14 +162,17 @@ class Scanner {
           else if(isEndOfFile()){
             return null;
           }
+          
           else if(isIntConst(currentChar)){
             state = 8;
             term+=currentChar;
           }
+          
           else if(isSymbol(currentChar)){
             state = 10;
             term+=currentChar;
           }
+            
           else if(!isSymbol(currentChar)&&!isAlpha1(currentChar)&&!isAlpha2(currentChar)&&!isSpace(currentChar)){
             state = -1;
             term+=currentChar;
@@ -237,6 +257,15 @@ class Scanner {
             token.setText(term);
             state=0;
             return token;
+          }
+        case 11:
+          System.out.println("AQUI");
+          if(currentChar =='\n'){
+            state = 0;
+            
+          }else{
+            state = 11;
+           // System.out.println("futurechar"+futureChar);
           }
           
       }
