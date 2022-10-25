@@ -31,7 +31,7 @@ class Scanner {
   }
   
   private boolean isIntConst(char c){//checa inteiro
-    return c>='0' && c<='9';
+    return Character.isDigit(c);
   }
   
 
@@ -39,10 +39,6 @@ class Scanner {
     return (c>='a' && c<='z')||(c>='A' && c<='Z');
   }
   
-  private boolean isAlpha2(char c){//checa se é palavra
-    return (c>='a' && c<='z')||(c>='A' && c<='Z')||c=='_';
-  }
-
 
   private boolean isStringConst(char c){
     return (c=='"');
@@ -52,13 +48,8 @@ class Scanner {
     return c==' '|| c=='\t'||c=='\n'||c=='\r';
   }
 
-
-  private boolean isBreakLine(char c){
-    return c=='\n';
-  }
-
   private boolean isSymbol(char c){
-    String symbols = "{}()[].,;+-*/&|<>=~";
+    String symbols = "{}()[].,;+-*&|<>=~";
     char[] list = symbols.toCharArray();
      for (int i = 0; i < list.length; i++){
        if(c==list[i]){
@@ -119,25 +110,32 @@ class Scanner {
   }
 
   private char futureChar(){
-    if(isEndOfFile()){
-      return '\0';
-    }
-    else if(!(index== content.length)){
+    if(indexNext<content.length){
       return content[indexNext++];
     }
-    return content[indexNext];
+    return '\0';
   }
 
+  private boolean isComent(char c, char d){
+    return (c=='/' && d=='/');
+  }
 
-  
-  
+  private boolean beginComentBlock(char c, char d){
+    return (c=='/' && d=='*');
+  }
+  private boolean endComentBlock(char c, char d){
+    return (c=='*' && d=='/');
+  }
+
   private void back(){//volta estad0
     index--;
   }
 
-  private boolean isComent(char c, char d){
-    return (c=='\'' && d=='\'');
+  private void backFuture(){//volta estad0
+    indexNext--;
   }
+
+  
   public Token nextToken(){//esse aqui é o brabo, faz a mágica
     char currentChar,futureChar;
     Token token;
@@ -145,91 +143,83 @@ class Scanner {
     state = 0;
 
     if(isEndOfFile()){
-            return null;
-          }
+      return null;
+    }
      
     while(true){
       currentChar = nextChar();
-      //futureChar = futureChar();
-      //System.out.println("char atual "+currentChar);
-     // System.out.println("char futuro "+futureChar);
+      futureChar = futureChar();
       switch(state){
         case 0:
-          if(isStringConst(currentChar)){
-            term+=currentChar;
-            state = 1;
-          }
-          else if(isEndOfFile()){
+          if(isEndOfFile()){
             return null;
           }
-          
-          else if(isIntConst(currentChar)){
+
+          else if(isSpace(currentChar)){
+            state=0;
+          }
+            
+          else if(isIntConst(currentChar)){ 
             state = 8;
             term+=currentChar;
           }
-          
-          else if(isSymbol(currentChar)){
-            state = 10;
-            term+=currentChar;
+
+          else if(isStringConst(currentChar)){
+            //term+=currentChar;
+            state = 1;
           }
-            
-          else if(!isSymbol(currentChar)&&!isAlpha1(currentChar)&&!isAlpha2(currentChar)&&!isSpace(currentChar)){
-            state = -1;
-            term+=currentChar;
-          }
+
           else if(isAlpha1(currentChar)){
             state = 3;
             term+=currentChar;
           }
+          else if(currentChar=='/'){
+            if(isComent(currentChar,futureChar)){
+              state = 11; 
+            }
+            else if(beginComentBlock(currentChar,futureChar)){
+              state = 12;
+            }
+            else if(futureChar!='\n'){
+              //System.out.println("atual= "+currentChar);
+              //System.out.println("proximo= "+futureChar);
+              state = 10;
+              term+=currentChar;  
+            }        
+          }
+          else if(isSymbol(currentChar)){
+            //System.out.println("atual "+currentChar);
+            //System.out.println("próximo " + futureChar);
+            state = 10;
+            term+=currentChar;
+          }
+          
+          else{
+            state = -1;
+          }
           break;
+/*Finaliza estado 0*/
           
         case 1:
           if(!isStringConst(currentChar)){
             term+=currentChar;
             state = 1;
           }else{
-            term+=currentChar;
+            //term+=currentChar;
             state = 2;      
           }
-          break;
+        break;
+/*Finaliza estado 1*/
           
         case 2:
           back();
+          backFuture();
           token = new Token();
           token.setType(Token.stringConst);
           token.setText(term);
           state=0;
           return token;
-          
-        case 8:
-          if(isIntConst(currentChar)){
-            state = 8;
-            term+=currentChar;
-          }else{
-            back();
-            token = new Token();
-            token.setType(Token.intConst);
-            token.setText(term);
-            state=0;
-            term+=currentChar;
-            return token;
-          }
-          
-        case 10:
-          back();
-          token = new Token();
-          token.setType(Token.symbol);
-          token.setText(term);
-          state=0;
-          return token;
-          
-        case -1:
-          back();
-          token = new Token();
-          token.setType(Token.ilegal);
-          token.setText(term);
-          state=0;
-          return token;
+/*Finaliza estado 2*/
           
         case 3:
           if(isAlpha1(currentChar)){
@@ -238,36 +228,83 @@ class Scanner {
           }else{
             state = 4;
             back();
+            backFuture();
           }
-          break;
+        break;
+/*Finaliza estado 3*/
           
         case 4:
           if(isKeyword(term)){
             back();
+            backFuture();
             token = new Token();
             token.setType(Token.keyword);
             token.setText(term);
             state=0;
-            
             return token;
+            
           }else{
             back();
+            backFuture();
             token = new Token();
             token.setType(Token.identifier);
             token.setText(term);
             state=0;
+            return token;          }
+/*Finaliza estado 4*/
+          
+        case 8:
+          if(isIntConst(currentChar)){
+            term+=currentChar;
+            state = 8;
+          }else{
+            back();
+            backFuture();
+            token = new Token();
+            token.setType(Token.intConst);
+            token.setText(term);
+            state=0;
+            term+=currentChar;
             return token;
           }
+        break;
+/*Finaliza estado 8*/
+          
+       case 10:
+          back();
+          backFuture();
+          token = new Token();
+          token.setType(Token.symbol);
+          token.setText(term);
+          state=0;
+          return token;
+/*Finaliza estado 10*/
+          
+        case -1:
+          back();
+          backFuture();
+          token = new Token();
+          token.setType(Token.ilegal);
+          token.setText(term);
+          state=0;
+          return token;
+/*Finaliza estado -1*/
+
         case 11:
-          System.out.println("AQUI");
-          if(currentChar =='\n'){
+          if(currentChar=='\n'){
             state = 0;
-            
           }else{
             state = 11;
-           // System.out.println("futurechar"+futureChar);
           }
-          
+        break;
+/*Finaliza estado 11*/
+        case 12:
+          if(!endComentBlock(currentChar,futureChar)){
+            state = 12;
+          }else{
+            state = 0;
+          }
+        break;
       }
       
     }

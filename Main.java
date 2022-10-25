@@ -24,7 +24,7 @@ Categorias de tokens
 */
 class Main {
   public static void main(String[] args) {
-   Scanner input = new Scanner("input.txt");
+   Scanner input = new Scanner("testeJack1.txt");
     Token token = null;
     
     do {

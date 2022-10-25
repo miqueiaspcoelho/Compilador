@@ -3,7 +3,7 @@ class Token {
   public static final String keyword = "keyword";
   public static final String symbol = "symbol";
   public static final String identifier = "identifier";
-  public static final String intConst = "intConst";
+  public static final String intConst = "integerConstant";
   public static final String stringConst = "stringConst";
   public static final String ilegal = "ilegal";
   
@@ -34,6 +34,6 @@ class Token {
 
   @Override
   public String toString(){
-    return "<"+ type +">" + text + "</"+ type + ">";
+    return "<"+ type +"> " + text + " </"+ type + ">";
   }
 }
