@@ -24,14 +24,18 @@ Categorias de tokens
 */
 class Main {
   public static void main(String[] args) {
-   Scanner input = new Scanner("testeJack1.txt");
-    Token token = null;
-    
+    Scanner input = new Scanner("input.txt");
+    Parser parser = new Parser(input);
+    Token token = null;   
+    parser.start();
+    System.out.println(parser.XMLOutput());
+
+    /*
     do {
-      token = input.nextToken();
-      if(token != null){
-        System.out.println(token);
-      }
-    } while(token!=null);
-  }
+        token = input.nextToken();
+        if(token != null){
+          System.out.println(token);
+        }
+      } while(token!=null);*/
+    }
 }

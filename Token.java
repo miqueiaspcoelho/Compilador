@@ -4,7 +4,7 @@ class Token {
   public static final String symbol = "symbol";
   public static final String identifier = "identifier";
   public static final String intConst = "integerConstant";
-  public static final String stringConst = "stringConst";
+  public static final String stringConst = "stringConstant";
   public static final String ilegal = "ilegal";
   
   private String type;
@@ -32,8 +32,10 @@ class Token {
     this.text = text;
   }
 
+  
   @Override
   public String toString(){
     return "<"+ type +"> " + text + " </"+ type + ">";
   }
+  
 }

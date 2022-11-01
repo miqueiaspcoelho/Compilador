@@ -1,11 +1,11 @@
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.lang.*;
-import java.io.*;
-import java.util.stream.IntStream;
-import java.util.List;
+//import java.util.*;
+//import java.lang.*;
+//import java.io.*;
+//import java.util.stream.IntStream;
+//import java.util.List;
 import java.util.ArrayList;
 
 class Scanner {
@@ -48,7 +48,7 @@ class Scanner {
     return c==' '|| c=='\t'||c=='\n'||c=='\r';
   }
 
-  private boolean isSymbol(char c){
+  private boolean isSymbol(char c){//checa se é um símbolo válido - {/}
     String symbols = "{}()[].,;+-*&|<>=~";
     char[] list = symbols.toCharArray();
      for (int i = 0; i < list.length; i++){
@@ -60,7 +60,7 @@ class Scanner {
   }
 
   
-  private boolean isKeyword(String c){
+  private boolean isKeyword(String c){//checa palavra chave
     boolean r=false;
     ArrayList<String> keywords = new ArrayList<>();
     keywords.add("class");
@@ -109,29 +109,29 @@ class Scanner {
     return content[index++];
   }
 
-  private char futureChar(){
+  private char futureChar(){//caractere de antecipaçãoi
     if(indexNext<content.length){
       return content[indexNext++];
     }
     return '\0';
   }
 
-  private boolean isComent(char c, char d){
+  private boolean isComent(char c, char d){//checa se é comentário
     return (c=='/' && d=='/');
   }
 
-  private boolean beginComentBlock(char c, char d){
+  private boolean beginComentBlock(char c, char d){//começo de comentário
     return (c=='/' && d=='*');
   }
-  private boolean endComentBlock(char c, char d){
+  private boolean endComentBlock(char c, char d){ //final de comentário
     return (c=='*' && d=='/');
   }
 
-  private void back(){//volta estad0
+  private void back(){//volta estado
     index--;
   }
 
-  private void backFuture(){//volta estad0
+  private void backFuture(){//volta estado
     indexNext--;
   }
 
