@@ -1,1 +1,1 @@
-let a = 111515151015105 + 4;
+do Screen.drawRectangle(x,y);
