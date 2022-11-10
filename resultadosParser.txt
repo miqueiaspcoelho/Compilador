@@ -1,0 +1,152 @@
+do Screen.drawRectangle(x, y, x + size, y + size);
+<doStatement>
+<keyword> do </keyword>
+  <identifier> Screen </identifier>
+  <symbol> . </symbol>
+  <identifier> drawRectangle </identifier>
+  <symbol> ( </symbol>
+  <expressionList>
+    <expression>
+      <term>
+      <identifier> x </identifier>
+      </term>
+    </expression>
+    <symbol> , </symbol>
+    <expression>
+      <term>
+      <identifier> y </identifier>
+      </term>
+    </expression>
+    <symbol> , </symbol>
+    <expression>
+      <term>
+        <identifier> x </identifier>
+      </term>
+      <operation>
+        <symbol> + </symbol>
+      </operation>
+      <term>
+        <identifier> size </identifier>
+      </term>
+    </expression>
+    <symbol> , </symbol>
+    <expression>
+      <term>
+        <identifier> y </identifier>
+      </term>
+      <operation>
+        <symbol> + </symbol>
+      </operation>
+      <term>
+        <identifier> size </identifier>
+      </term>
+    </expression>
+  </expressionList>
+  <symbol> ) </symbol>
+  <symbol> ; </symbol>
+</doStatement>
+
+
+while ((i > n))
+{
+let sum
+= sum
++ i;
+let i = i + 1;
+}
+<statements>
+  <whileStatement>
+    <keyword> while </keyword>
+    <symbol> ( </symbol>
+      <expressionList>
+        <expression>
+          <term>
+            <identifier> i </identifier>
+          </term>
+          <operation>
+            <symbol> > </symbol>
+          </operation>
+          <term>
+            <identifier> n </identifier>
+          </term>
+        </expression>
+      </expressionList>
+    <symbol> ) </symbol>
+    <symbol> { </symbol>
+      <statements>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier> sum </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <identifier> sum </identifier>
+            </term>
+            <operation>
+              <symbol> + </symbol>
+            </operation>
+            <term>
+              <identifier> i </identifier>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier> i </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <identifier> i </identifier>
+            </term>
+            <operation>
+              <symbol> + </symbol>
+            </operation>
+            <term>
+              <integerConstant> 1 </integerConstant>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+      </statements>
+    <symbol> } </symbol>
+  </whileStatement>
+</statements>
+
+
+
+<statements>
+  <letStatement>
+    <keyword> let </keyword>
+    <identifier> a </identifier>
+    <symbol> = </symbol>
+    <symbol> ( </symbol>
+      <expression>
+        <term>
+          <identifier> m </identifier>
+        </term>
+        <operation>
+          <symbol> + </symbol>
+        </operation>
+        <term>
+          <identifier> b </identifier>
+        </term>
+      </expression>
+    <symbol> ) </symbol>
+    <expression>
+      <operation>
+        <symbol> < </symbol>
+      </operation>
+      <term>
+        <integerConstant> 1 </integerConstant>
+      </term>
+      <operation>
+        <symbol> + </symbol>
+      </operation>
+      <term>
+        <integerConstant> 2 </integerConstant>
+      </term>
+    </expression>
+    <symbol> ; </symbol>
+  </letStatement>
+</statements>

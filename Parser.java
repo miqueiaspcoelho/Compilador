@@ -19,13 +19,28 @@ class Parser {
   void start(){
     currentToken = scanner.nextToken();
      //System.out.println(currentToken.getText());
-    statements(currentToken);
+    parserStatements();
    
   }
-  
+
+  void parserStatements () {
+    printNonTerminal("statements");
+    while (currentToken.getText().equals("while") ||
+    currentToken.getText().equals("if") ||
+    currentToken.getText().equals("let") ||
+    currentToken.getText().equals("do") ||
+    currentToken.getText().equals("return")) 
+    {
+      parserStatement(currentToken);
+      if(currentToken==null){
+        break;
+      }
+    }    
+    printNonTerminal("/statements");
+    }
 
   //checa declarações
-  public void statements(Token currentToken){
+  public void parserStatement(Token currentToken){
     switch(currentToken.getText()){
       case "let":
         parserLet();
@@ -36,6 +51,14 @@ class Parser {
       case "do":
         parserDo();
       break;
+      case "while":
+        parserWhile();
+      break;
+      case "if":
+        parserIf();
+      break;
+           
+      
     }
   }
   
@@ -77,6 +100,35 @@ class Parser {
     return xmlOutput.toString();
   }
 
+  //if
+  void parserIf () {
+    printNonTerminal("ifStatement");
+    expectToken(currentToken,"if");
+    expectToken(currentToken,"(");
+    parserExpression();
+    expectToken(currentToken,")");
+    expectToken(currentToken,"{");
+    parserStatements();
+    expectToken(currentToken,"}");
+    printNonTerminal("/ifStatement");
+    }
+
+  
+  // 'while' '(' expression ')' '{' statements '}'
+  void parserWhile(){
+    printNonTerminal("whileStatement");
+    expectToken(currentToken,"while");
+    expectToken(currentToken,"(");
+    parserExpressionList();
+    expectToken(currentToken,")");
+    expectToken(currentToken,"{");
+    parserStatements();
+    expectToken(currentToken,"}");
+    printNonTerminal("/whileStatement");
+    }
+
+  
+
   //'do' subrotineCall ';' com alguns probleminhas ainda
   void parserDo(){
     printNonTerminal("doStatement");
@@ -98,24 +150,42 @@ class Parser {
     printNonTerminal("/return");
   }
 
-  //expressionList - falta revisar algumas coisas
+  //'expression' -> term(op term)*';'
+  void parserExpression(){
+    printNonTerminal("expression");
+      parserTerm();
+      while(isOperator(currentToken)==true){
+        printNonTerminal("operation");
+        expectToken(currentToken,currentToken.getText());
+        printNonTerminal("/operation");
+        parserTerm();
+      }
+    
+    printNonTerminal("/expression");
+  }
+  
+  //expressionList
   void parserExpressionList(){
+    
     printNonTerminal("expressionList");
     if(!currentToken.getText().equals(")")){
       parserExpression();
+     
     }
     while(currentToken.getText().equals(",")){
       expectToken(currentToken,",");
       parserExpression();
+      
     }
     printNonTerminal("/expressionList");
   }
 
-  //subrotineCall - falta revisar algumas coisas
+  //subrotineCall
   void parserSubrotineCall(){
     if(currentToken.getText().equals("(")){
       expectToken(currentToken,"(");
       parserExpressionList();
+      
       expectToken(currentToken,")");
     }
     else{
@@ -134,21 +204,21 @@ class Parser {
         printNonTerminal("term");
         expectToken(currentToken, "integerConstant");
         printNonTerminal("/term");
-        countOp-=1;
+        countOp=0;
       break;
 
       case "stringConstant":
         printNonTerminal("term");
         expectToken(currentToken, "stringConstant");
         printNonTerminal("/term");
-        countOp-=1;
+        countOp=0;
       break;
 
       case "identifier":
         printNonTerminal("term");
         expectToken(currentToken, "identifier");
         printNonTerminal("/term");
-        countOp-=1;
+        countOp=0;
       break;
 
       case "keyword":
@@ -160,7 +230,7 @@ class Parser {
             printNonTerminal("term");
             expectToken(currentToken, currentToken.getText());
             printNonTerminal("/term");
-            countOp-=1;
+            countOp=0;
           break;
           default:
             ;
@@ -174,27 +244,15 @@ class Parser {
     String aux = c.getText();
     if(c.getType().equals("symbol")){
       if(aux.equals("+") || aux.equals("-")||aux.equals("*")||aux.equals("/")){
-        countOp+=1;
+        countOp=1;
         return true;
       }else if(aux.equals("&")||aux.equals("|")||aux.equals(">")||aux.equals("<")||aux.equals("=")){
-        countOp+=1;
+        countOp=1;
         return true;
       }
     }
     return false;
   }
 
-  //'expression' -> term(op term)*';'
-  void parserExpression(){
-   
-    printNonTerminal("expression");
-    parserTerm();
-    while(isOperator(currentToken)==true && countOp==0){
-        printNonTerminal("operation");
-        expectToken(currentToken,currentToken.getText());
-        printNonTerminal("/operation");
-        parserTerm();
-    }
-    printNonTerminal("/expression");
-  }
+
 }

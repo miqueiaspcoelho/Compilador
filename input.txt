@@ -1,1 +1,7 @@
-do Screen.drawRectangle(x,y);
+if (size > 2) {
+            do erase();
+            let size = size - 2;
+            do draw();
+        }
+        return;
+	}

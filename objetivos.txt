@@ -15,3 +15,4 @@
   *resolver bug do doStatement quando tem (x,y+1)
   *demais regras, ir seguindo o exemplo do professor.
 }
+
