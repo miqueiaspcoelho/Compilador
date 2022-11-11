@@ -1,7 +1,12 @@
-if (size > 2) {
-            do erase();
-            let size = size - 2;
-            do draw();
-        }
-        return;
-	}
+class squarte {
+	field int x,y;//variaveis
+	field int size;//variaveis
+/*bloco de comentário*/
+	constructor squarte new(int ax, int ay, int asize){
+		let x= ax;
+		let y = ay;
+		let size = asize;
+		do draw();
+		return this;
+}
+}

@@ -3,7 +3,7 @@ class Parser {
   private Token currentToken;//token atual
   private StringBuilder xmlOutput = new StringBuilder();//arquivo xml
   private  int countOp = 0;
-
+  
   //construtor
   public Parser (Scanner scanner){
     this.scanner = scanner;
@@ -19,7 +19,11 @@ class Parser {
   void start(){
     currentToken = scanner.nextToken();
      //System.out.println(currentToken.getText());
-    parserStatements();
+    //parserStatements();
+    if(currentToken!=null){
+       parserClass();
+    }
+   
    
   }
 
@@ -78,13 +82,17 @@ class Parser {
     printNonTerminal("/letStatement");
   }
 
-  //token esperado
+  //token esperado - mudar para tirar currentToken daqui de dentro, pois, é variável global
+  
   private void expectToken(Token currentToken, String tokenExpect){
     if(currentToken.getText().equals(tokenExpect) || currentToken.getType().equals(tokenExpect)){
       //System.out.println(currentToken.getText());
-      xmlOutput.append(String.format("%s\r\n", currentToken.toString()));
+      if(currentToken!=null){
+        xmlOutput.append(String.format("%s\r\n", currentToken.toString()));
       nextToken();
-      return;
+      return;  
+      }
+      
     }else{
       throw new Error("Syntax error - expected "+tokenExpect+" found " + currentToken.getText());
     }
@@ -98,6 +106,175 @@ class Parser {
   //retornando em string o xml
   public String XMLOutput() {
     return xmlOutput.toString();
+  }
+
+  void parserClass(){
+    printNonTerminal("class");
+    expectToken(currentToken,"class");
+    expectToken(currentToken,"identifier");
+    expectToken(currentToken,"{");
+    while(currentToken.getText().equals("static")||currentToken.getText().equals("field")){
+      parserClassVarDec();
+    }
+    while(currentToken.getText().equals("constructor")||
+      currentToken.getText().equals("function")||
+      currentToken.getText().equals("method")){
+      //System.out.println(currentToken.getText());
+      if(currentToken!=null){
+        parserSubroutineDec();
+      }
+        
+    }
+    expectToken(currentToken,"}");
+    printNonTerminal("/class"); 
+    if(currentToken!=null){
+      parserClass();
+    }
+  }
+
+  void parserVarDec(){
+    printNonTerminal("varDec");
+    expectToken(currentToken,"var");
+    // 'int' | 'char' | 'boolean' | className
+    switch(currentToken.getType()){
+        case "keyword":
+          if(currentToken.getText().equals("int")||
+             currentToken.getText().equals("char")||
+            currentToken.getText().equals("boolean")){
+            expectToken(currentToken,currentToken.getText());
+            }
+        break;
+        case "identifier":
+          expectToken(currentToken,currentToken.getText());
+        break;
+      }
+    expectToken(currentToken,"identifier");
+    
+    while (currentToken.getText().equals(",")) {
+      expectToken(currentToken,",");
+      expectToken(currentToken,"identifier");
+    }
+
+    expectToken(currentToken,";");
+    printNonTerminal("/varDec");
+  }
+
+  void parserParameterList(){
+    //System.out.println(currentToken.getText());
+    printNonTerminal("parameterList");
+    
+    if(!currentToken.getText().equals(")")){
+      
+      //if(currentToken.getText().equals("static")||
+       //currentToken.getText().equals("field")){
+      expectToken(currentToken, currentToken.getText());
+      switch(currentToken.getType()){
+        case "keyword":
+          if(currentToken.getText().equals("int")||
+             currentToken.getText().equals("char")||
+            currentToken.getText().equals("boolean")){
+            expectToken(currentToken,currentToken.getText());
+            }
+        break;
+        case "identifier":
+          expectToken(currentToken,currentToken.getText());
+        break;
+      }
+    //}
+    }
+    while(currentToken.getText().equals(",")){
+      expectToken(currentToken,currentToken.getText());
+      //if(currentToken.getText().equals("static")||
+      //currentToken.getText().equals("field")){
+        
+       // expectToken(currentToken, currentToken.getText());
+        switch(currentToken.getType()){
+          case "keyword":
+            if(currentToken.getText().equals("int")||
+               currentToken.getText().equals("char")||
+              currentToken.getText().equals("boolean")){
+              expectToken(currentToken,currentToken.getText());
+              }
+          break;
+          case "identifier":
+            expectToken(currentToken,currentToken.getText());
+          break;
+        }
+      //}
+      expectToken(currentToken,"identifier");
+    }
+    printNonTerminal("/parameterList");
+  }
+
+
+  void parserSubroutineDec(){
+    printNonTerminal("subroutineDec");
+    //expectPeek(CONSTRUCTOR, FUNCTION, METHOD);
+    if(currentToken.getText().equals("constructor")||
+      currentToken.getText().equals("function")||
+      currentToken.getText().equals("method")){
+      expectToken(currentToken, currentToken.getText());
+      // 'int' | 'char' | 'boolean' | className
+        switch(currentToken.getType()){
+          case "keyword":
+            if(currentToken.getText().equals("int")||
+              currentToken.getText().equals("char")||
+              currentToken.getText().equals("boolean")||
+              currentToken.getText().equals("void")
+              ){
+                expectToken(currentToken,currentToken.getText());
+            }
+          break;
+          case "identifier":
+            expectToken(currentToken,currentToken.getText());
+          break; 
+        }
+    }
+    expectToken(currentToken,"identifier");
+    expectToken(currentToken,"(");
+    parserParameterList();
+    expectToken(currentToken,")");
+    parserSubroutineBody();//falta implementar
+
+    printNonTerminal("/subroutineDec");
+  }
+
+
+  void parserSubroutineBody(){
+    expectToken(currentToken,"{");
+    parserStatements();
+    expectToken(currentToken,"}");
+  }
+  
+  //classVarDec → ( 'static' | 'field' ) type varName ( ',' varName)* ';'
+  void parserClassVarDec(){
+    
+    printNonTerminal("classVarDec");
+    if(currentToken.getText().equals("static")||
+       currentToken.getText().equals("field")){
+      
+      expectToken(currentToken, currentToken.getText());
+      switch(currentToken.getType()){
+        case "keyword":
+          if(currentToken.getText().equals("int")||
+             currentToken.getText().equals("char")||
+            currentToken.getText().equals("boolean")){
+            expectToken(currentToken,currentToken.getText());
+            }
+        break;
+        case "identifier":
+          expectToken(currentToken,currentToken.getText());
+        break;
+      }
+      expectToken(currentToken,"identifier");
+    }
+    while(currentToken.getText().equals(",")){
+      //System.out.println(currentToken.getText());
+      expectToken(currentToken,currentToken.getText());
+      expectToken(currentToken,"identifier");
+    }
+    expectToken(currentToken, ";");
+    printNonTerminal("/classVarDec");
   }
 
   //if
@@ -185,7 +362,6 @@ class Parser {
     if(currentToken.getText().equals("(")){
       expectToken(currentToken,"(");
       parserExpressionList();
-      
       expectToken(currentToken,")");
     }
     else{

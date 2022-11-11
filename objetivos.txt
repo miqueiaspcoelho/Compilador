@@ -11,8 +11,14 @@
   *expressionlist
   
   A fazer:
-  *terminar statements
-  *resolver bug do doStatement quando tem (x,y+1)
-  *demais regras, ir seguindo o exemplo do professor.
+  *terminar statements - feito 11/11/22
+  *resolver bug do doStatement quando tem (x,y+1) - feito 11/11/22
+  *demais regras, ir seguindo o exemplo do professor. - feito
 }
 
+11/11/22
+finalizado 97%
+Falta fazer:
+Pegar várias aberturas e fechamentos de parênteses
+Trocar '>', '<', '=' pelas expressões que o professor falou
+Relizar mais teste.
