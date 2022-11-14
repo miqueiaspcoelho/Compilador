@@ -1,3 +1,12 @@
 {
-  "files": {}
+  "files": {
+    "input.txt": [
+      {
+        "id": "e3a60acd-db0b-4ed4-acc1-ac3045072519",
+        "line": 11,
+        "version": 880,
+        "index": 407
+      }
+    ]
+  }
 }

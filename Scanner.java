@@ -18,9 +18,9 @@ class Scanner {
   public Scanner(String input){
     try{
       String text = new String(Files.readAllBytes(Paths.get(input)),StandardCharsets.UTF_8);
-      System.out.println("DEBUG ------");
-      System.out.println(text);
-      System.out.println("------");
+      //System.out.println("DEBUG ------");
+      //System.out.println(text);
+      //System.out.println("------");
       content = text.toCharArray();
       index=0;
 }

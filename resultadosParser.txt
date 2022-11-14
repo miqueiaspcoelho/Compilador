@@ -257,3 +257,112 @@ class squarte {
     </subroutineDec>
   <symbol> } </symbol>
 </class>
+
+
+
+
+
+<class>
+  <keyword> class </keyword>
+  <identifier> squarte </identifier>
+  <symbol> { </symbol>
+    <classVarDec>
+      <keyword> field </keyword>
+      <keyword> int </keyword>
+      <identifier> x </identifier>
+      <symbol> , </symbol>
+      <identifier> y </identifier>
+      <symbol> ; </symbol>
+    </classVarDec>
+    <classVarDec>
+      <keyword> field </keyword>
+      <keyword> int </keyword>
+      <identifier> size </identifier>
+      <symbol> ; </symbol>
+    </classVarDec>
+    <subroutineDec>
+      <keyword> constructor </keyword>
+      <identifier> squarte </identifier>
+      <identifier> new </identifier>
+      <symbol> ( </symbol>
+        <parameterList>
+          <keyword> int </keyword>
+          <identifier> ax </identifier>
+          <symbol> , </symbol>
+          <keyword> int </keyword>
+          <identifier> ay </identifier>
+          <symbol> , </symbol>
+          <keyword> int </keyword>
+          <identifier> asize </identifier>
+        </parameterList>
+      <symbol> ) </symbol>
+      <symbol> { </symbol>
+        <statements>
+          <letStatement>
+            <keyword> let </keyword>
+            <identifier> x </identifier>
+            <symbol> = </symbol>
+            <expression>
+              <term>
+                <symbol> ( </symbol>
+                  <expression>
+                    <term>
+                      <identifier> ax </identifier>
+                    </term>
+                    <operation>
+                      <symbol> + </symbol>
+                    </operation>
+                    <term>
+                      <integerConstant> 6 </integerConstant>
+                    </term>
+                  </expression>
+                <symbol> ) </symbol>
+              </term>
+            </expression>
+            <symbol> ; </symbol>
+          </letStatement>
+          <letStatement>
+            <keyword> let </keyword>
+            <identifier> y </identifier>
+            <symbol> = </symbol>
+            <expression>
+              <term>
+              <identifier> ay </identifier>
+              </term>
+            </expression>
+            <symbol> ; </symbol>
+            </letStatement>
+            <letStatement>
+            <keyword> let </keyword>
+            <identifier> size </identifier>
+            <symbol> = </symbol>
+            <expression>
+            <term>
+            <identifier> asize </identifier>
+            </term>
+            </expression>
+            <symbol> ; </symbol>
+          </letStatement>
+          <doStatement>
+            <keyword> do </keyword>
+            <identifier> draw </identifier>
+            <symbol> ( </symbol>
+            <expressionList>
+            </expressionList>
+            <symbol> ) </symbol>
+            <symbol> ; </symbol>
+          </doStatement>
+          <return>
+            <keyword> return </keyword>
+            <expression>
+            <term>
+            <keyword> this </keyword>
+            </term>
+            </expression>
+            <symbol> ; </symbol>
+          </return>
+        </statements>
+      <symbol> } </symbol>
+    </subroutineDec>
+  <symbol> } </symbol>
+</class>
