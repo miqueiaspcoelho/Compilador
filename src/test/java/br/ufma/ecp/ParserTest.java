@@ -250,10 +250,10 @@ public class ParserTest extends TestSupport {
         """;
 
     var result = parser.XMLOutput();
-    assertEquals(expectedResult, result);
 
     expectedResult = expectedResult.replaceAll("  ", "");
     result = result.replaceAll("\r", ""); // no codigo em linux não tem o retorno de carro
+    assertEquals(expectedResult, result);
   }
 
   @Test

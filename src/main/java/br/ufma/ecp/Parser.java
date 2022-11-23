@@ -218,7 +218,7 @@ public class Parser {
         expectPeek(WHILE);
         expectPeek(LPAREN);
         parserExpression();
-        expectPeek(LPAREN);
+        expectPeek(RPAREN);
         expectPeek(LBRACE);
         parserStatements();
         expectPeek(RBRACE);
