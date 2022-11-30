@@ -300,7 +300,7 @@ public class ParserTest extends TestSupport {
         field int x, y;
 
         constructor Point new(int Ax, int Ay) {
-        //var int Ax; //pode ter isso dentro da gramática?
+        var int Ax;
 
         let x = Ax;
         let y = Ay;

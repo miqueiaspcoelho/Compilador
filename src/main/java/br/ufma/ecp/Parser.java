@@ -297,10 +297,7 @@ public class Parser {
             vmWriter.writePop(Segment.THAT, 0); // Store right hand side evaluation in THAT 0.
 
         } else {
-            if (symbol != null) {
-                vmWriter.writePop(kind2Segment(symbol.kind()), symbol.index());
-            } // fiz essa gambiarra, ver com o professor como resolver de maneira correta
-
+            vmWriter.writePop(kind2Segment(symbol.kind()), symbol.index());
         }
 
         expectPeek(SEMICOLON);
