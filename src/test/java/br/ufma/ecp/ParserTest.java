@@ -298,8 +298,9 @@ public class ParserTest extends TestSupport {
     var input = """
         class Point {
         field int x, y;
+
         constructor Point new(int Ax, int Ay) {
-        var int Ax;
+        //var int Ax; //pode ter isso dentro da gramática?
 
         let x = Ax;
         let y = Ay;
