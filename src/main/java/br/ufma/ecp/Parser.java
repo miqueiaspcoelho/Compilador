@@ -411,8 +411,10 @@ public class Parser {
     void parserExpression() {
         printNonTerminal("expression");
         parserTerm();
+
         while (isOperator(peekToken.type)) {
             var op = peekToken.type;
+            System.out.println("aqui1");
             expectPeek(peekToken.type);
             parserTerm();
             compileOperators(op);
@@ -455,7 +457,6 @@ public class Parser {
             case IDENTIFIER:
                 expectPeek(IDENTIFIER);
                 Symbol sym = symbolTable.resolve(currentToken.value());
-
                 if (peekTokenIs(LPAREN) || peekTokenIs(DOT)) {
                     parserSubrotineCall();
                 } else { // variavel comum ou array
@@ -470,9 +471,8 @@ public class Parser {
                         vmWriter.writePush(Segment.THAT, 0); // push the value of the address pointer back onto stack
 
                     } else {
-                        if (sym != null) {// gambiarra de novo, não sei o motivo do sym está sendo null
-                            vmWriter.writePush(kind2Segment(sym.kind()), sym.index());
-                        }
+
+                        vmWriter.writePush(kind2Segment(sym.kind()), sym.index());
 
                     }
                 }
