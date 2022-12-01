@@ -260,9 +260,9 @@ public class Parser {
     // letStatement -> 'let' identifier( '[' expression ']' )? '=' expression ';’
     // muitas modificações - ok.
     void parserLet() {
-        var isArray = false;
 
         printNonTerminal("letStatement");
+        var isArray = false;
         expectPeek(LET);
         expectPeek(IDENTIFIER);
 
@@ -271,7 +271,6 @@ public class Parser {
         // String type = currentToken.value();
         // String name = currentToken.value();
         // symbolTable.define(name, type, kind);
-
         var symbol = symbolTable.resolve(currentToken.value());
 
         if (peekTokenIs(LBRACKET)) { // array
@@ -414,7 +413,6 @@ public class Parser {
 
         while (isOperator(peekToken.type)) {
             var op = peekToken.type;
-            System.out.println("aqui1");
             expectPeek(peekToken.type);
             parserTerm();
             compileOperators(op);
@@ -456,7 +454,8 @@ public class Parser {
                 break;
             case IDENTIFIER:
                 expectPeek(IDENTIFIER);
-                Symbol sym = symbolTable.resolve(currentToken.value());
+                Symbol sym = symbolTable.resolve(currentToken.value()); // no terminal aqui aparece que é null
+
                 if (peekTokenIs(LPAREN) || peekTokenIs(DOT)) {
                     parserSubrotineCall();
                 } else { // variavel comum ou array

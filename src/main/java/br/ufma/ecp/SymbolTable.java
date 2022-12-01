@@ -66,9 +66,11 @@ public class SymbolTable {
 
     public Symbol resolve(String name) {
         Symbol s = subroutineScope.get(name);
+        System.out.println(s);
         if (s != null) {
             return s;
         } else {
+
             return classScope.get(name);
         }
 

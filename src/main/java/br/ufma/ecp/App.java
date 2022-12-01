@@ -19,10 +19,10 @@ public class App {
 
             outputStream.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
     }
@@ -41,6 +41,7 @@ public class App {
     }
 
     public static void main(String[] args) {
+
         if (args.length != 1) {
             System.err.println("Please provide a single file path argument.");
             System.exit(1);
