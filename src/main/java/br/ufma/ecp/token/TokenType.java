@@ -1,51 +1,74 @@
 package br.ufma.ecp.token;
 
+import java.util.Arrays;
+
 public enum TokenType {
- 
-    STRING,
 
-    NUMBER,
+    STRING(),
 
-    IDENTIFIER,
+    INTEGER(),
+
+    IDENTIFIER(),
 
     // keywords
-    WHILE, CLASS,CONSTRUCTOR,FUNCTION,
-    METHOD,FIELD,STATIC,VAR,INT,
-    CHAR,BOOLEAN,VOID,TRUE,FALSE,
-    NULL,THIS,LET,DO,IF,ELSE, RETURN,
+    WHILE("while"), CLASS("class"), CONSTRUCTOR("constructor"), FUNCTION("function"),
+    METHOD("method"), FIELD("field"), STATIC("static"), VAR("var"), INT("int"),
+    CHAR("char"), BOOLEAN("boolean"), VOID("void"), TRUE("true"), FALSE("false"),
+    NULL("null"), THIS("this"), LET("let"), DO("do"), IF("if"),
+    ELSE("else"), RETURN("return"),
 
+    // Symbols
+    PLUS("+"),
+    EQ("="),
+    MINUS("-"),
+    ASTERISK("*"),
+    SLASH("/"),
+    AND("&"),
+    OR("|"),
+    NOT("~"),
 
-     // symbols
-    // delimitator
+    LT("<"),
+    GT(">"),
 
-    LPAREN,
-    RPAREN,
-    LBRACE,
-    RBRACE,
-    LBRACKET,
-    RBRACKET,
+    DOT("."),
+    COMMA(","),
+    SEMICOLON(";"),
+    LPAREN("("),
+    RPAREN(")"),
+    LBRACE("{"),
+    RBRACE("}"),
+    LBRACKET("["),
+    RBRACKET("]"),
 
-    COMMA,
-    SEMICOLON,
-    DOT,
+    EOF();
 
-    PLUS,
-    MINUS,
-    ASTERISK,
-    SLASH,
+    private TokenType() {
+    }
 
-    AND,
-    OR,
-    NOT,
+    private TokenType(String value) {
+        this.value = value;
+    }
 
-    LT,
-    GT,
-    EQ,
+    public String value;
 
+    public static TokenType fromValue(String value) {
+        return Arrays.stream(TokenType.values())
+                .filter(symbolType -> symbolType.value != null && symbolType.value.equals(value))
+                .findFirst()
+                .orElse(null);
+    }
 
+    static public boolean isSymbol(char c) {
+        String symbols = "{}()[].,;+-*/&|<>=~";
+        return symbols.indexOf(c) > -1;
+    }
 
-    EOF, 
+    static public boolean isOperator(TokenType type) {
+        return "+-*/<>=~&|".contains(type.value);
+    }
 
-    ILLEGAL
-    
+    static public TokenType keyword(String value) {
+        return fromValue(value);
+    }
+
 }
